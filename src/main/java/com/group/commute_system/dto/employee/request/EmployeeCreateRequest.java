@@ -12,4 +12,7 @@ public class EmployeeCreateRequest {
     private LocalDate workStartDate;
     private LocalDate birthday;
 
+    public boolean getIsManager() {
+        return isManager;
+    }
 }

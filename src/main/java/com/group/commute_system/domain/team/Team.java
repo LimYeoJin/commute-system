@@ -1,9 +1,13 @@
 package com.group.commute_system.domain.team;
 
+import com.group.commute_system.domain.employee.Employee;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,10 +19,15 @@ public class Team {
     @Column(nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "team")
+    private List<Employee> employeeList = new ArrayList<>();
+
     public Team(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException(String.format("잘못된 name(%s)이 들어왔습니다.", name));
         }
         this.name = name;
     }
+
+
 }

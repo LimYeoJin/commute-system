@@ -11,7 +11,7 @@ create table team(
 create table employee(
 	id bigint auto_increment,
     name varchar(100) not null,
-    team_name varchar(100),
+    team_id varchar(100),
     is_manager tinyint(1),
     work_start_date date,
     birthday date,
