@@ -5,9 +5,13 @@ import com.group.commute_system.domain.employee.EmployeeRepository;
 import com.group.commute_system.domain.team.Team;
 import com.group.commute_system.domain.team.TeamRepository;
 import com.group.commute_system.dto.employee.request.EmployeeCreateRequest;
+import com.group.commute_system.dto.employee.response.EmployeeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +32,13 @@ public class EmployeeService {
                 request.getWorkStartDate(),
                 request.getBirthday(),
                 team));
+    }
+
+    @Transactional
+    public List<EmployeeResponse> getEmployees() {
+        return employeeRepository.findAll()
+                .stream()
+                .map(EmployeeResponse::new)
+                .collect(Collectors.toList());
     }
 }
