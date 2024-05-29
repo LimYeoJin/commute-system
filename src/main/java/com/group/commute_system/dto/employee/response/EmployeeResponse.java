@@ -17,13 +17,10 @@ public class EmployeeResponse {
 
     public EmployeeResponse(Employee employee) {
         this.name = employee.getName();
-        this.teamName = getTeamName(employee);
+        this.teamName = employee.getTeam().getName();
         this.role = (employee.isManager()) ? Role.MANAGER : Role.MEMBER;
         this.birthday = employee.getBirthday();
         this.workStartDate = employee.getWorkStartDate();
     }
 
-    public String getTeamName(Employee employee) {
-        return employee.getTeam().getName();
-    }
 }
