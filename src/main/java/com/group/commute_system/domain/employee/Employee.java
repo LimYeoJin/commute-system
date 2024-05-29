@@ -1,14 +1,11 @@
 package com.group.commute_system.domain.employee;
 
 import com.group.commute_system.domain.team.Team;
-import com.group.commute_system.dto.employee.request.EmployeeCreateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.hibernate.type.NumericBooleanConverter;
-import org.hibernate.type.TrueFalseConverter;
 
 import java.time.LocalDate;
 
