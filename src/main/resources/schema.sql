@@ -17,3 +17,13 @@ create table employee(
     birthday date,
     primary key(id)
 );
+
+-- 근무기록(직원 ID, 날짜, 출근 시간, 퇴근 시간)
+create table work_log(
+    id bigint auto_increment,
+    employee_id bigint,
+    date date,
+    check_in_time datetime,
+    check_out_time datetime,
+    primary key(id)
+);

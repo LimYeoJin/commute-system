@@ -34,11 +34,14 @@ public class EmployeeService {
                 team));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<EmployeeResponse> getEmployees() {
         return employeeRepository.findAll()
                 .stream()
                 .map(EmployeeResponse::new)
                 .collect(Collectors.toList());
     }
+
+
+
 }

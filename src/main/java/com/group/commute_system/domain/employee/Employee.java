@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.type.NumericBooleanConverter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +32,8 @@ public class Employee {
     @JoinColumn(name="team_id")
     private Team team;
 
+    @OneToMany(mappedBy = "employee")
+    private List<WorkLog> workLogList = new ArrayList<>();
     public Employee(String name, boolean isManager, LocalDate workStartDate, LocalDate birthday, Team team) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException(String.format("잘못된 name(%s)이 들어왔습니다.", name));
