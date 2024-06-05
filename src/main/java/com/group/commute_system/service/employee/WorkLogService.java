@@ -5,12 +5,18 @@ import com.group.commute_system.domain.employee.EmployeeRepository;
 import com.group.commute_system.domain.employee.WorkLog;
 import com.group.commute_system.domain.employee.WorkLogRepository;
 import com.group.commute_system.dto.employee.request.WorkLogCreateRequest;
+import com.group.commute_system.dto.employee.response.WorkLogDetail;
+import com.group.commute_system.dto.employee.response.WorkLogResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +60,28 @@ public class WorkLogService {
         workLog.doLeaveWork();
     }
 
+    @Transactional
+    public WorkLogResponse getWorkLogDetails(Long id, YearMonth yearMonth){
+        Employee employee = checkEmployee(id);
+
+        LocalDate startDay = yearMonth.atDay(1);
+        LocalDate endDay = yearMonth.atEndOfMonth();
+
+        List<WorkLog> workLogs = workLogRepository.findByEmployeeIdAndDateBetween(employee.getId(), startDay, endDay)
+                                                    .stream()
+                                                    .collect(Collectors.toList());
+
+        if (workLogs.size() == 0 || workLogs == null) {
+            throw new IllegalArgumentException(String.format("[%s] month has no work record. ", yearMonth));
+        }
+
+        List<WorkLogDetail> workLogDetails  = workLogs.stream()
+                .filter(checkOutTime -> checkOutTime.getCheckOutTime() != null)
+                .map(detail -> new WorkLogDetail(detail.getDate(), ChronoUnit.MINUTES.between(detail.getCheckInTime(), detail.getCheckOutTime())))
+                .collect(Collectors.toList());
+
+        long sum = workLogDetails.stream().mapToLong(detail -> detail.getWorkingMinutes()).sum();
+        return new WorkLogResponse(workLogDetails, sum);
+    }
 
 }
